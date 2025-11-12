@@ -3,7 +3,6 @@ import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import os from 'os';
 
-// 🔍 Dynamically get local IP for dev HMR (handy for mobile testing)
 function getLanIp() {
   try {
     const nets = os.networkInterfaces();
@@ -22,7 +21,6 @@ const DEV_PROTOCOL = process.env.VITE_DEV_PROTOCOL || 'ws';
 const DEV_ORIGIN = process.env.VITE_DEV_ORIGIN || `http://${DEV_HOST}:${DEV_PORT}`;
 
 export default defineConfig(() => ({
-  // 🧩 Dev server (ignored in production)
   server: {
     host: true,
     port: DEV_PORT,
@@ -41,19 +39,19 @@ export default defineConfig(() => ({
       protocol: DEV_PROTOCOL,
     },
   },
-
-  // ⚙️ Production build (Railway, VPS, etc.)
-  build: {
-    outDir: 'public/build',  // ✅ assets + manifest go here
+    build: {
+    outDir: 'public/build',
     emptyOutDir: true,
-    manifest: true,          // ✅ generates public/build/manifest.json
+    manifest: true,
     rollupOptions: {
-      // keep default chunking (better cacheability)
-      // remove this if you really want a single bundle:
-      // output: { manualChunks: undefined },
+        output: {
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
+        }
     },
     chunkSizeWarningLimit: 1000,
-  },
+    },
 
   plugins: [
     laravel({
