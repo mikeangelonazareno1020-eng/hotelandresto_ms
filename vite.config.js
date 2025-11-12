@@ -3,6 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import os from 'os';
 
+// 🔍 Dynamically get local IP for dev HMR (handy for mobile testing)
 function getLanIp() {
     try {
         const nets = os.networkInterfaces();
@@ -22,7 +23,8 @@ const DEV_PORT = Number(process.env.VITE_DEV_PORT || 5173);
 const DEV_PROTOCOL = process.env.VITE_DEV_PROTOCOL || 'ws';
 const DEV_ORIGIN = process.env.VITE_DEV_ORIGIN || `http://${DEV_HOST}:${DEV_PORT}`;
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command, mode }) => ({
+    // 🧩 Development server config
     server: {
         host: true,
         port: DEV_PORT,
@@ -34,7 +36,6 @@ export default defineConfig(({ command }) => ({
                 `http://${DEV_HOST}:8000`,
                 DEV_ORIGIN,
             ],
-            credentials: false,
         },
         hmr: {
             host: DEV_HOST,
@@ -43,16 +44,28 @@ export default defineConfig(({ command }) => ({
         },
     },
 
-    // 👇 Add these for Railway / production build
+    // ⚙️ Production build config (for Railway, VPS, etc.)
     build: {
-        outDir: 'public/build',
-        manifest: true,
+        outDir: 'public/build',          // ✅ where assets go
         emptyOutDir: true,
+        manifest: true,                  // ✅ generate manifest.json
+        rollupOptions: {
+            output: {
+                manualChunks: undefined, // simpler single-bundle output
+            },
+        },
+        chunkSizeWarningLimit: 1000,     // silence 500 kB warning
+        // ✅ ensures Laravel sees the manifest at /public/build/manifest.json
+        manifestDir: 'public/build',
     },
 
+    // 🔌 Plugins
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+            ],
             refresh: true,
         }),
         tailwindcss(),
