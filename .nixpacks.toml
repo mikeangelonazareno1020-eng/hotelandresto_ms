@@ -1,5 +1,16 @@
 [phases.setup]
-nixPkgs = ["php", "php81Extensions.curl", "php81Extensions.mbstring", "php81Extensions.xml", "php81Extensions.pdo_mysql", "php81Extensions.tokenizer", "php81Extensions.fileinfo", "nodejs_20", "npm"]
+# Install PHP + common extensions + Node 20 + npm
+nixPkgs = [
+  "php",
+  "php81Extensions.curl",
+  "php81Extensions.mbstring",
+  "php81Extensions.xml",
+  "php81Extensions.pdo_mysql",
+  "php81Extensions.tokenizer",
+  "php81Extensions.fileinfo",
+  "nodejs_20",
+  "npm"
+]
 
 [phases.build]
 commands = [
