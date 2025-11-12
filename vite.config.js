@@ -3,13 +3,11 @@ import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import os from 'os';
 
-// Dynamically resolve current machine LAN IP for dev server
 function getLanIp() {
     try {
         const nets = os.networkInterfaces();
         for (const name of Object.keys(nets)) {
             for (const net of nets[name] || []) {
-                // pick first IPv4, non-internal
                 if (net.family === 'IPv4' && !net.internal) {
                     return net.address;
                 }
@@ -24,13 +22,12 @@ const DEV_PORT = Number(process.env.VITE_DEV_PORT || 5173);
 const DEV_PROTOCOL = process.env.VITE_DEV_PROTOCOL || 'ws';
 const DEV_ORIGIN = process.env.VITE_DEV_ORIGIN || `http://${DEV_HOST}:${DEV_PORT}`;
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
     server: {
-        host: true, // listen on all interfaces
+        host: true,
         port: DEV_PORT,
         strictPort: false,
-        origin: DEV_ORIGIN, // used in injected asset URLs
-        // Ensure dev assets are loadable from Laravel origin (8000)
+        origin: DEV_ORIGIN,
         cors: {
             origin: [
                 'http://localhost:8000',
@@ -45,6 +42,14 @@ export default defineConfig({
             protocol: DEV_PROTOCOL,
         },
     },
+
+    // 👇 Add these for Railway / production build
+    build: {
+        outDir: 'public/build',
+        manifest: true,
+        emptyOutDir: true,
+    },
+
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
@@ -52,4 +57,4 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
-});
+}));

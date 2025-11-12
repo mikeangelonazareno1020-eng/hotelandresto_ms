@@ -1,5 +1,5 @@
 [phases.setup]
-# Install PHP + common extensions + Node 20 + npm
+# Install PHP + required extensions + Node 20 + npm
 nixPkgs = [
   "php",
   "php81Extensions.curl",
@@ -14,14 +14,26 @@ nixPkgs = [
 
 [phases.build]
 commands = [
+  # 1️⃣ Install Laravel dependencies
   "composer install --no-dev --optimize-autoloader",
-  "npm install",
-  "npm run build",
+
+  # 2️⃣ Install and build frontend
+  "npm ci",                        # faster + cleaner than npm install
+  "npm run build",                 # builds /public/build for Vite
+
+  # 3️⃣ Run migrations (optional — only if you want auto DB setup)
   "php artisan migrate --force",
+
+  # 4️⃣ Cache optimization
   "php artisan config:cache",
   "php artisan route:cache",
-  "php artisan view:cache"
+  "php artisan view:cache",
+
+  # 5️⃣ Clear stale files from previous builds (fixes missing CSS/JS issues)
+  "php artisan optimize:clear"
 ]
 
 [start]
+# ✅ Serve Laravel via built-in PHP server
+# NOTE: Never use "vite" here; only Laravel should serve the built assets
 cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
