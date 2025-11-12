@@ -32,8 +32,8 @@ export default defineConfig(({ command, mode }) => ({
         origin: DEV_ORIGIN,
         cors: {
             origin: [
-                'http://localhost:8000',
-                `http://${DEV_HOST}:8000`,
+                'http://localhost:8080',
+                `http://${DEV_HOST}:8080`,
                 DEV_ORIGIN,
             ],
         },
