@@ -1,0 +1,294 @@
+{
+  "notation": "Gane & Sarson",
+  "version": "1.0",
+  "generated": "2025-11-09",
+  "description": "Node/edge summary for Hotel & Resto MS data‑flow diagrams (context, Level 1, Level 2). IDs use P for processes, E for external entities, D for data stores.",
+  "conventions": {
+    "shapes": {
+      "process": "rounded-rectangle",
+      "external": "square",
+      "datastore": "open-ended rectangle"
+    },
+    "edge": {
+      "style": "directed",
+      "label": "data flow"
+    }
+  },
+  "stores_to_tables": {
+    "D.room_info": "room_info",
+    "D.room_reservations": "room_reservations",
+    "D.resto_menu": "resto_menu",
+    "D.resto_orders": "resto_orders",
+    "D.receipts": "receipts",
+    "D.account_admins": "account_admins",
+    "D.account_customers": "account_customers",
+    "D.logs_admin": "logs_admin",
+    "D.logs_reports": "logs_reports",
+    "D.transport_services": "transport_services",
+    "D.transport_vehicles": "transport_vehicles",
+    "D.amenities": "room_amenities_extras",
+    "D.room_amenity": "room_amenity (pivot)"
+  },
+  "roles": [
+    {
+      "id": "R1",
+      "name": "Super Admin",
+      "handles": ["P0", "P1", "P2", "P3", "P4"],
+      "datastore_access": {
+        "D5": ["create", "read", "update", "delete"],
+        "D6": ["read"],
+        "D7": ["read"],
+        "D2": ["read", "update"],
+        "D1": ["read"],
+        "D3": ["read"],
+        "D9": ["read", "update"],
+        "D10": ["create", "read", "update", "delete"]
+      },
+      "notes": "Global governance: manages admin accounts, full visibility of logs/reports, can configure vehicles/GPS and oversee hotel/restaurant modules."
+    },
+    {
+      "id": "R2",
+      "name": "Administrator",
+      "handles": ["P1", "P3", "P4"],
+      "datastore_access": {
+        "D2": ["create", "read", "update"],
+        "D1": ["create", "read", "update"],
+        "D6": ["read"],
+        "D9": ["create", "read", "update"],
+        "D10": ["create", "read", "update"],
+        "D8": ["create", "read", "update"]
+      },
+      "notes": "Operations admin: room/booking lifecycle support, amenities, and GPS/transport setup. Reads platform logs/reports."
+    },
+    {
+      "id": "R3",
+      "name": "Hotel Manager",
+      "handles": ["P1", "P1.1", "P1.2", "P1.3"],
+      "datastore_access": {
+        "D1": ["create", "read", "update"],
+        "D2": ["read", "update"],
+        "D4": ["create", "read"],
+        "D8": ["read"]
+      },
+      "notes": "Oversees hotel operations: reservations, check‑in/out, room management, and hotel revenue reports."
+    },
+    {
+      "id": "R4",
+      "name": "Hotel Frontdesk",
+      "handles": ["P1.1", "P1.2"],
+      "datastore_access": {
+        "D1": ["create", "read", "update"],
+        "D2": ["read", "update"],
+        "D4": ["create", "read"]
+      },
+      "notes": "Executes day‑to‑day booking intake, guest verification, check‑in/out, and folio settlement."
+    },
+    {
+      "id": "R5",
+      "name": "Restaurant Manager",
+      "handles": ["P2", "P2.1", "P2.2"],
+      "datastore_access": {
+        "D3": ["read"],
+        "D4": ["read"],
+        "resto_menu": ["create", "read", "update"],
+        "D7": ["read"]
+      },
+      "notes": "Oversees menu/products, monitors POS performance, and reviews restaurant financial logs/reports."
+    },
+    {
+      "id": "R6",
+      "name": "Restaurant Cashier",
+      "handles": ["P2.1", "P2.2"],
+      "datastore_access": {
+        "D3": ["create", "read", "update"],
+        "D4": ["create", "read"],
+        "D7": ["create"]
+      },
+      "notes": "Captures orders, takes payments, issues receipts. Payment and receipt events flow to logs_reports."
+    }
+  ],
+  "levels": [
+    {
+      "level": 0,
+      "name": "Context",
+      "nodes": [
+        {"id": "P0", "type": "process", "name": "Hotel & Resto System"},
+        {"id": "E1", "type": "external", "name": "Customer/Guest"},
+        {"id": "E2", "type": "external", "name": "Payment Gateway/Bank"},
+        {"id": "E3", "type": "external", "name": "Staff (Frontdesk/Cashier/Managers)"},
+        {"id": "D1", "type": "datastore", "name": "Reservations", "table": "room_reservations"},
+        {"id": "D2", "type": "datastore", "name": "Rooms", "table": "room_info"},
+        {"id": "D3", "type": "datastore", "name": "Orders", "table": "resto_orders"},
+        {"id": "D4", "type": "datastore", "name": "Receipts", "table": "receipts"},
+        {"id": "D5", "type": "datastore", "name": "Admin Accounts", "table": "account_admins"},
+        {"id": "D6", "type": "datastore", "name": "Logs", "table": "logs_admin"},
+        {"id": "D7", "type": "datastore", "name": "Reports Log", "table": "logs_reports"}
+      ],
+      "edges": [
+        {"from": "E1", "to": "P0", "label": "Online booking / walk‑in details"},
+        {"from": "P0", "to": "E1", "label": "Confirmations, bills, receipts"},
+        {"from": "E3", "to": "P0", "label": "Operational updates (check‑in/out, orders)"},
+        {"from": "P0", "to": "E2", "label": "Authorize/charge/refund"},
+        {"from": "E2", "to": "P0", "label": "Approval/decline"},
+        {"from": "P0", "to": "D1", "label": "Create/update reservation"},
+        {"from": "P0", "to": "D2", "label": "Update room status/amenities"},
+        {"from": "P0", "to": "D3", "label": "Create/modify order"},
+        {"from": "P0", "to": "D4", "label": "Issue receipt"},
+        {"from": "P0", "to": "D6", "label": "Activity log"},
+        {"from": "P0", "to": "D7", "label": "Financial/report event"}
+      ]
+    },
+    {
+      "level": 1,
+      "name": "Top‑Level Decomposition",
+      "groups": [
+        {
+          "id": "P1",
+          "type": "process",
+          "name": "Hotel Operations",
+          "nodes": [
+            {"id": "E1", "type": "external", "name": "Guest"},
+            {"id": "P1.1", "type": "process", "name": "Reservations"},
+            {"id": "P1.2", "type": "process", "name": "Check‑In/Out"},
+            {"id": "P1.3", "type": "process", "name": "Room Management"},
+            {"id": "D1", "type": "datastore", "name": "Reservations", "table": "room_reservations"},
+            {"id": "D2", "type": "datastore", "name": "Rooms", "table": "room_info"},
+            {"id": "D8", "type": "datastore", "name": "Amenities", "table": "room_amenities_extras"}
+          ],
+          "edges": [
+            {"from": "E1", "to": "P1.1", "label": "Booking request"},
+            {"from": "P1.1", "to": "D1", "label": "Reservation record"},
+            {"from": "P1.2", "to": "D1", "label": "Status updates"},
+            {"from": "P1.3", "to": "D2", "label": "Room status, rate, amenities"},
+            {"from": "P1.3", "to": "D8", "label": "Assign amenities (pivot)"}
+          ]
+        },
+        {
+          "id": "P2",
+          "type": "process",
+          "name": "Restaurant POS",
+          "nodes": [
+            {"id": "E4", "type": "external", "name": "Diner"},
+            {"id": "P2.1", "type": "process", "name": "Order Capture"},
+            {"id": "P2.2", "type": "process", "name": "Payment & Receipt"},
+            {"id": "D3", "type": "datastore", "name": "Orders", "table": "resto_orders"},
+            {"id": "D4", "type": "datastore", "name": "Receipts", "table": "receipts"}
+          ],
+          "edges": [
+            {"from": "E4", "to": "P2.1", "label": "Items/qty"},
+            {"from": "P2.1", "to": "D3", "label": "Order line items"},
+            {"from": "P2.2", "to": "D4", "label": "Receipt"}
+          ]
+        },
+        {
+          "id": "P3",
+          "type": "process",
+          "name": "Reporting & Logs",
+          "nodes": [
+            {"id": "D6", "type": "datastore", "name": "Logs", "table": "logs_admin"},
+            {"id": "D7", "type": "datastore", "name": "Reports Log", "table": "logs_reports"}
+          ],
+          "edges": [
+            {"from": "P1", "to": "D6", "label": "Ops activity"},
+            {"from": "P2", "to": "D7", "label": "Receipts/payments"}
+          ]
+        },
+        {
+          "id": "P4",
+          "type": "process",
+          "name": "GPS & Transport",
+          "nodes": [
+            {"id": "E5", "type": "external", "name": "Map Provider"},
+            {"id": "D9", "type": "datastore", "name": "Transport Services", "table": "transport_services"},
+            {"id": "D10", "type": "datastore", "name": "Vehicles", "table": "transport_vehicles"}
+          ],
+          "edges": [
+            {"from": "P4", "to": "E5", "label": "Tiles/geocoding"},
+            {"from": "P4", "to": "D9", "label": "Service requests/updates"},
+            {"from": "P4", "to": "D10", "label": "Vehicle telemetry"}
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "parent": "P1",
+      "process": "Hotel Operations",
+      "expansions": [
+        {
+          "id": "P1.1",
+          "name": "Reservations (Level 2)",
+          "nodes": [
+            {"id": "E1", "type": "external", "name": "Guest"},
+            {"id": "P1.1.1", "type": "process", "name": "Quote & Availability"},
+            {"id": "P1.1.2", "type": "process", "name": "Create Reservation"},
+            {"id": "P1.1.3", "type": "process", "name": "Process Payment"},
+            {"id": "D1", "type": "datastore", "name": "Reservations", "table": "room_reservations"},
+            {"id": "D2", "type": "datastore", "name": "Rooms", "table": "room_info"},
+            {"id": "D4", "type": "datastore", "name": "Receipts", "table": "receipts"}
+          ],
+          "edges": [
+            {"from": "E1", "to": "P1.1.1", "label": "Dates, guests"},
+            {"from": "P1.1.1", "to": "D2", "label": "Check availability"},
+            {"from": "P1.1.1", "to": "E1", "label": "Quote"},
+            {"from": "P1.1.2", "to": "D1", "label": "Reservation record"},
+            {"from": "P1.1.3", "to": "D4", "label": "Deposit/receipt"}
+          ]
+        },
+        {
+          "id": "P1.2",
+          "name": "Check‑In/Out (Level 2)",
+          "nodes": [
+            {"id": "P1.2.1", "type": "process", "name": "Verify & Assign Room"},
+            {"id": "P1.2.2", "type": "process", "name": "Post Charges"},
+            {"id": "P1.2.3", "type": "process", "name": "Settle & Checkout"},
+            {"id": "D1", "type": "datastore", "name": "Reservations"},
+            {"id": "D2", "type": "datastore", "name": "Rooms"},
+            {"id": "D4", "type": "datastore", "name": "Receipts"}
+          ],
+          "edges": [
+            {"from": "P1.2.1", "to": "D2", "label": "Room status = Checked In/Out"},
+            {"from": "P1.2.2", "to": "D1", "label": "Folio updates"},
+            {"from": "P1.2.3", "to": "D4", "label": "Final bill/receipt"}
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "parent": "P2",
+      "process": "Restaurant POS",
+      "expansions": [
+        {
+          "id": "P2.1",
+          "name": "Order Capture (Level 2)",
+          "nodes": [
+            {"id": "E4", "type": "external", "name": "Diner"},
+            {"id": "P2.1.1", "type": "process", "name": "Build Order"},
+            {"id": "P2.1.2", "type": "process", "name": "Send to Kitchen"},
+            {"id": "D3", "type": "datastore", "name": "Orders"}
+          ],
+          "edges": [
+            {"from": "E4", "to": "P2.1.1", "label": "Items/qty"},
+            {"from": "P2.1.1", "to": "D3", "label": "Order JSON"},
+            {"from": "P2.1.2", "to": "D3", "label": "Status updates"}
+          ]
+        },
+        {
+          "id": "P2.2",
+          "name": "Payment & Receipt (Level 2)",
+          "nodes": [
+            {"id": "P2.2.1", "type": "process", "name": "Take Payment"},
+            {"id": "P2.2.2", "type": "process", "name": "Issue Receipt"},
+            {"id": "D4", "type": "datastore", "name": "Receipts"},
+            {"id": "D7", "type": "datastore", "name": "Reports Log"}
+          ],
+          "edges": [
+            {"from": "P2.2.1", "to": "D7", "label": "Payment event"},
+            {"from": "P2.2.2", "to": "D4", "label": "Receipt record"}
+          ]
+        }
+      ]
+    }
+  ]
+}

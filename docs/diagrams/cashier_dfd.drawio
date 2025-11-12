@@ -1,0 +1,127 @@
+<mxfile host="app.diagrams.net" modified="2025-11-06T00:00:00.000Z" agent="CodexCLI" version="22.0.0" type="device">
+  <diagram id="cashier-dfd" name="Cashier DFD">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Processes -->
+        <mxCell id="p_cashier" value="Cashier / POS System" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="690" y="420" width="260" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="p_close" value="End-of-Day Close" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="690" y="540" width="260" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- External Entities -->
+        <mxCell id="e_customer" value="Customer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="140" width="170" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_frontdesk" value="Front Desk / Waiter" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="80" y="320" width="170" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_manager" value="Manager" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="140" width="170" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_gateway" value="Payment Gateway / Bank" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="320" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Data Stores -->
+        <mxCell id="d_orders" value="D: Orders" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="480" y="160" width="170" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d_folios" value="D: Room Folios" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="480" y="280" width="170" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d_inventory" value="D: Inventory" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="480" y="420" width="170" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d_payments" value="D: Payments" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="960" y="160" width="170" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d_receipts" value="D: Receipts &amp; Shift Logs" style="shape=cylinder;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="960" y="280" width="200" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- Flows: External <-> Cashier -->
+        <mxCell id="f_cust_to_cash" value="items/services, payment" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="e_customer" target="p_cashier">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_cash_to_cust" value="receipt" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="p_cashier" target="e_customer">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_fd_to_cash" value="order / room folio details" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="e_frontdesk" target="p_cashier">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_mgr_to_cash" value="void/refund approval" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;dashed=1;" edge="1" parent="1" source="e_manager" target="p_cashier">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_cash_to_mgr" value="sales &amp; shift reports" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="p_close" target="e_manager">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_cash_to_gateway" value="authorize card/online payment" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="p_cashier" target="e_gateway">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_gateway_to_cash" value="approval / decline code" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="e_gateway" target="p_cashier">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Flows: Data Stores -->
+        <mxCell id="f_cash_to_orders" value="sale line items" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="p_cashier" target="d_orders">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_orders_to_cash" value="open/held orders" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;dashed=1;" edge="1" parent="1" source="d_orders" target="p_cashier">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_cash_to_folios" value="room charge / folio update" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="p_cashier" target="d_folios">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_cash_to_inventory" value="deduct stock by sale" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="p_cashier" target="d_inventory">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_cash_to_payments" value="payment record (cash/card/mobile)" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="p_cashier" target="d_payments">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_cash_to_receipts" value="receipt + shift txns" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="p_cashier" target="d_receipts">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_receipts_to_close" value="shift totals" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="d_receipts" target="p_close">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f_payments_to_close" value="payments summary" style="endArrow=classic;html=1;strokeColor=#666666;fontSize=11;" edge="1" parent="1" source="d_payments" target="p_close">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Title -->
+        <mxCell id="title" value="Data Flow Diagram — Cashier (Hotel &amp; Resto)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="40" width="560" height="40" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <!-- This file is plain XML and can be opened and edited in draw.io / diagrams.net -->
+</mxfile>
+

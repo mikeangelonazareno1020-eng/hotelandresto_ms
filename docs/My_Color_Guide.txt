@@ -1,0 +1,17 @@
+| Purpose | Color | Hex | Meaning / Use |
+|----------|--------|----------------|
+| Primary Brand | #B0452D | 🟥 Deep Warm Brown | Main brand color — use for headers, primary buttons, delete actions. |
+| Primary Hover / Darker Shade | #913724 | | Hover or focus state for brown buttons. |
+| Accent / Highlight | #FFD600 | 🟨 Bright Amber | Used for highlights, icons, or callouts (complements brown). |
+| Secondary / Success | #315D43 | 🟩 Deep Green | Used for confirm buttons, status, and success actions. |
+| Secondary Hover | #264C36 | | Hover shade for deep green buttons. |
+| Soft Accent / Gold-Tone Utility | #BDA76B | 🟫 Muted Gold | Edit buttons and accent highlights. |
+| Soft Accent Hover | #A8915C | | Hover shade for gold buttons. |
+| Neutral Background | #FFFBEA | 🟨 Pale Cream | Used for panels and containers. Gives warmth and lightness. |
+| Highlight Overlay | bg-[#FFFBEA]/50 | Transparent version of cream | Soft blur overlay background (matches your glass-like backdrop). |
+| Border Accent | #D89C00 | 🟧 Golden Yellow | Used in icons or highlights for headings. |
+| Text Primary | #333333 | ⚫ Neutral Charcoal | For main text content. |
+| Text Secondary | #6B6B6B | ⚫ Gray Medium | For subtitles, descriptions. |
+| Muted Gray | #A3A3A3 | ⚫ Lighter Gray | For IDs or meta info. |
+| Unavailable BG | #FBE4E2 | 🔴 Soft Red | Indicates “Unavailable” states. |
+| Available BG | #E3F4E8 | 🟩 Soft Green | Indicates “Available” states. |
