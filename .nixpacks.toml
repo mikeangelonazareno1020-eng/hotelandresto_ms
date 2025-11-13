@@ -1,12 +1,12 @@
 [phases.setup]
 nixPkgs = [
   "php",
-  "php81Extensions.curl",
-  "php81Extensions.mbstring",
-  "php81Extensions.xml",
-  "php81Extensions.pdo_mysql",
-  "php81Extensions.tokenizer",
-  "php81Extensions.fileinfo",
+  "php82Extensions.curl",
+  "php82Extensions.mbstring",
+  "php82Extensions.xml",
+  "php82Extensions.pdo_mysql",
+  "php82Extensions.tokenizer",
+  "php82Extensions.fileinfo",
   "nodejs_20",
   "npm"
 ]
@@ -16,7 +16,6 @@ commands = [
   "composer install --no-dev --optimize-autoloader",
   "npm install",
   "npm run build",
-  "php artisan key:generate --force",
   "php artisan migrate --force",
   "php artisan config:cache",
   "php artisan route:cache",
@@ -24,4 +23,4 @@ commands = [
 ]
 
 [start]
-cmd = "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"
+cmd = "php artisan serve --host=0.0.0.0 --port=8080"
